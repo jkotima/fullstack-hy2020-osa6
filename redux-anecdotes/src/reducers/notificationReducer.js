@@ -13,12 +13,20 @@ export const setNotification = (notification, time=10) => {
       type: 'SET_NOTIFICATION',
       notification: notification
     })
-    setTimeout(() => {
+
+    if (window.localStorage.getItem('notificationTimeOutID')) {
+      clearTimeout(window.localStorage.getItem('notificationTimeOutID'))
+    }
+
+    const timeOutID = setTimeout(() => {
       dispatch({
         type: 'SET_NOTIFICATION',
         notification: ''
       })
+      window.localStorage.removeItem('notificationTimeOutID')
     }, time * 1000)
+
+    window.localStorage.setItem('notificationTimeOutID', timeOutID)
   }
 }
 
